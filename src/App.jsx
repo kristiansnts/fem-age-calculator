@@ -1,16 +1,32 @@
+import ArrowIcon from "images/icon-arrow.svg"
+
 function App() {
+
   return (
-    <>
-      <h1 className='text-3xl underline font-bold'>Vite + React</h1>
-      <div className="card bg-smokey-grey">
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+    <main id="app">
+      <form id="inputs">
+        <div className="input__group">
+          <span>Day</span>
+          <input type="number" name="day" placeholder="DD"/>
+        </div>
+        <div className="input__group">
+          <span>Month</span>
+          <input type="number" name="month" placeholder="MM"/>
+        </div>
+        <div className="input__group">
+          <span>Year</span>
+          <input type="number" name="year" placeholder="YYYY"/>
+        </div>
+      </form>
+      <div className="separator">
+        <img src={ArrowIcon} alt="" className="bg-primary-purple" />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <div id="result">
+          <div className="year__result"><span>--</span> years</div>
+          <div className="month__result"><span>--</span> months</div>
+          <div className="year__result"><span>--</span> days</div>
+      </div>
+    </main>
   )
 }
 
