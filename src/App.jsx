@@ -2,7 +2,7 @@
 import ArrowIcon from "images/icon-arrow.svg"
 import { getMaxDate, getCurrentYear } from "./hooks/formatDate"
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   
@@ -11,7 +11,7 @@ function App() {
     getValues,
     formState: {errors}
   } = useForm({
-    mode: 'onBlur'
+    mode: 'all'
   })
 
   const [age, setAge] = useState({
@@ -19,7 +19,7 @@ function App() {
     months: '--',
     day: '--'
   })
-
+  
   const calculateAge = () => {
     const birthTime = new Date(`${getValues('year')}-${getValues('month')}-${getValues('day')}`).getTime()
     const currentTime = new Date().getTime()
@@ -42,6 +42,7 @@ function App() {
           <span className="block mb-1 text-slate-500 text-xs tracking-widest uppercase">Day</span>
           <input className="w-full border p-3 rounded-lg focus:outline-primary-purple" type="number" name="day" placeholder="DD" 
           {...register("day", {
+            onBlur: () => calculateAge(),
             max: {
               value: getMaxDate(getValues('year'), getValues('month')),
               message: "Must be a valid day"
@@ -51,7 +52,7 @@ function App() {
               message: "This field is required"
             }
           })}
-          onBlur={calculateAge}
+          // onBlur={calculateAge}
           />
           <span className={errors.day?.message ? "text-xs italic text-red-300" : ""}>{errors.day?.message}</span>
         </div>
@@ -59,6 +60,7 @@ function App() {
           <span className="block mb-1 text-slate-500 text-xs tracking-widest uppercase">Month</span>
           <input className="w-full border p-3 rounded-lg focus:outline-primary-purple" type="number" name="month" placeholder="MM"
           {...register("month", {
+            onBlur: () => calculateAge(),
             max: {
               value: 12,
               message: "Must be a valid month"
@@ -68,7 +70,7 @@ function App() {
               message: "This field is required"
             }
           })}
-          onBlur={calculateAge}
+          // onBlur={calculateAge}
           />
           <span className={errors.month?.message ? "text-xs italic text-red-300" : ""}>{errors.month?.message}</span>
         </div>
@@ -76,6 +78,7 @@ function App() {
           <span className="block mb-1 text-slate-500 text-xs tracking-widest uppercase">Year</span>
           <input className="w-full border p-3 rounded-lg focus:outline-primary-purple" type="number" name="year" placeholder="YYYY"
           {...register("year", {
+            onBlur: () => calculateAge(),
             max: {
               value: getCurrentYear(),
               message: "Must be in the past"
@@ -85,7 +88,7 @@ function App() {
               message: "This field is required"
             }
           })}
-          onBlur={calculateAge}
+          // onBlur={calculateAge}
           />
           <span className={errors.year?.message ? "text-xs italic text-red-300" : ""}>{errors.year?.message}</span>
         </div>
