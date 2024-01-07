@@ -1,21 +1,38 @@
 /* eslint-disable no-unused-vars */
 import ArrowIcon from "images/icon-arrow.svg"
-import { useState } from "react"
 import { getMaxDate, getCurrentYear } from "./hooks/formatDate"
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 function App() {
   
   const {
     register,
-    handleSubmit,
     getValues,
     formState: {errors}
   } = useForm({
     mode: 'onBlur'
   })
-  
-  const onSubmit = data => console.log(data)
+
+  const [age, setAge] = useState({
+    years: '--',
+    months: '--',
+    day: '--'
+  })
+
+  const calculateAge = () => {
+    const birthTime = new Date(`${getValues('year')}-${getValues('month')}-${getValues('day')}`).getTime()
+    const currentTime = new Date().getTime()
+
+    const diff = currentTime - birthTime
+    const ageDate = new Date(diff)
+    
+    setAge({
+      years: ageDate.getUTCFullYear() - 1970,
+      months: ageDate.getUTCMonth(),
+      day: ageDate.getUTCDate() - 1
+    })
+}
 
   return (
     <main id="app" className="h-screen flex items-center justify-center">
@@ -34,6 +51,7 @@ function App() {
               message: "This field is required"
             }
           })}
+          onBlur={calculateAge}
           />
           <span className={errors.day?.message ? "text-xs italic text-red-300" : ""}>{errors.day?.message}</span>
         </div>
@@ -50,6 +68,7 @@ function App() {
               message: "This field is required"
             }
           })}
+          onBlur={calculateAge}
           />
           <span className={errors.month?.message ? "text-xs italic text-red-300" : ""}>{errors.month?.message}</span>
         </div>
@@ -66,17 +85,18 @@ function App() {
               message: "This field is required"
             }
           })}
+          onBlur={calculateAge}
           />
           <span className={errors.year?.message ? "text-xs italic text-red-300" : ""}>{errors.year?.message}</span>
         </div>
       </form>
       <div className="separator my-12 border-b relative cursor-pointer">
-        <img src={ArrowIcon} alt="" className="bg-primary-purple rounded-full w-12 p-3 md:p-3 md:w-20 md:-top-9 absolute -top-5 right-1/2 md:right-0 hover:bg-black active:bg-black focus:bg-black" onClick={handleSubmit(onSubmit)}/>
+        <img src={ArrowIcon} alt="" className="bg-primary-purple rounded-full w-12 p-3 md:p-3 md:w-20 md:-top-9 absolute -top-5 right-1/2 md:right-0 hover:bg-black active:bg-black focus:bg-black" onClick={calculateAge}/>
       </div>
       <div id="result" className="p-3">
-          <div className="year__result text-5xl flex items-end italic font-bold"><span className="text-6xl text-primary-purple mr-3">--</span> years</div>
-          <div className="month__result text-5xl flex items-end italic font-bold"><span className="text-6xl text-primary-purple mr-3">--</span> months</div>
-          <div className="days__result text-5xl flex items-end italic font-bold"><span className="text-6xl text-primary-purple mr-3">--</span> days</div>
+          <div className="year__result text-5xl flex items-end italic font-bold"><span className="text-6xl text-primary-purple mr-3">{isNaN(age.years) ? "--" : age.years}</span> years</div>
+          <div className="month__result text-5xl flex items-end italic font-bold"><span className="text-6xl text-primary-purple mr-3">{isNaN(age.months) ? "--" : age.months}</span> months</div>
+          <div className="days__result text-5xl flex items-end italic font-bold"><span className="text-6xl text-primary-purple mr-3">{isNaN(age.day) ? "--" : age.day}</span> days</div>
       </div>
       </div>
     </main>
