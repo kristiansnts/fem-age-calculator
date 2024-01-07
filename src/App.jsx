@@ -2,7 +2,7 @@
 import ArrowIcon from "images/icon-arrow.svg"
 import { getMaxDate, getCurrentYear } from "./hooks/formatDate"
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
   
